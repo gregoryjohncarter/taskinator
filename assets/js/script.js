@@ -131,9 +131,23 @@ var taskStatusChangeHandler = function(event) {
         var taskActionsEl = createTaskActions(taskIdCounter);
         listItemEl.appendChild(taskActionsEl);
 
-         // add entire list item to list
-         tasksToDoEl.appendChild(listItemEl);   
-
+         
+         switch (taskDataObj.status) {
+          case "to do":
+            taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 0;
+            tasksToDoEl.append(listItemEl);
+            break;
+          case "in progress":
+            taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 1;
+            tasksInProgressEl.append(listItemEl);
+            break;
+          case "completed":
+            taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 2;
+            tasksCompletedEl.append(listItemEl);
+            break;
+          default:
+            console.log("Something went wrong!");
+        }
          // increase task counter for next unique ID
          taskIdCounter++;
     }
@@ -256,7 +270,7 @@ var loadTasks = function() {
 
   savedTasks = JSON.parse(savedTasks);
 
-  // loop through savedTasks array
+  // loop through savedTasks array   
   for (var i = 0; i < savedTasks.length; i++) {
     createTaskEl(savedTasks[i])
   }
